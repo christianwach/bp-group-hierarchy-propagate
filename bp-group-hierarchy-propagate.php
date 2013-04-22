@@ -86,37 +86,34 @@ class BpGroupsHierarchyPropagate {
 	 */
 	function propagate_content_up( $has_activities, $activities_template, $template_args ) {
 
-		// probably redundant check for whether groups are currently enabled
-		if ( !bp_is_active( 'groups') ) {
-			bp_do_404();
-			return;
-		}
-
 		// does group have children?
 		if ( 
-		
+	
 			isset( $template_args['filter'] ) AND 
 			isset( $template_args['filter']['object'] ) AND
 			$template_args['filter']['object'] == 'groups' AND
 			class_exists( 'BP_Groups_Hierarchy' ) AND
 			BP_Groups_Hierarchy::has_children( $template_args['filter']['primary_id'] )
-		
-		) {
 	
-			// add children to filter
+		) {
+
+			// add children to query filter
 			$template_args['filter']['primary_id'] = $this->_get_children( 
 				$template_args['filter']['primary_id'] 
 			);
-		
+	
+			// recreate activities template
+			global $activities_template;
+			$activities_template = new BP_Activity_Template( $template_args );
+	
+			// override return value
+			$has_activities = $activities_template->has_activities();
+			
 		}
 	
-		// recreate template
-		global $activities_template;
-		$activities_template = new BP_Activity_Template( $template_args );
-		
 		// --<
-		return $activities_template->has_activities();
-
+		return $has_activities;
+	
 	}
 	
 	

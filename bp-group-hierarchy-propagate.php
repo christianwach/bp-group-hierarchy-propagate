@@ -29,8 +29,6 @@ class BpGroupsHierarchyPropagate {
 	 * properties
 	 */
 	
-	
-	
 	// builds list of subgroups during recursion
 	var $subgroup_ids = array();
 	

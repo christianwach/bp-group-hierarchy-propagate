@@ -15,6 +15,9 @@ Enables propagation of Activity Items up a hierarchy of BuddyPress Groups establ
 
 The BP Group Hierarchy Propagate Activity plugin enables propagation of Activity Items up a hierarchy of BuddyPress Groups established by the BP Group Hierarchy plugin.
 
+Note: this plugin has been developed and tested using BuddyPress 1.7 and BP Group Hierarchy 1.3.8.
+
+
 
 == Installation ==
 

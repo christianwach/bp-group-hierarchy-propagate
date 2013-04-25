@@ -1,7 +1,7 @@
 <?php
 /*
 --------------------------------------------------------------------------------
-Plugin Name: BP Group Hierarchy Propagate Activity
+Plugin Name: BP Group Hierarchy Propagate
 Description: Enables propagation of Activity Items up a hierarchy of BuddyPress Groups established by the BP Group Hierarchy plugin.
 Version: 0.1
 Author: Christian Wach

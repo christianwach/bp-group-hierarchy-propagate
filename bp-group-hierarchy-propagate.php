@@ -2,7 +2,7 @@
 /*
 --------------------------------------------------------------------------------
 Plugin Name: BP Group Hierarchy Propagate
-Description: Enables propagation of Activity Items up a hierarchy of BuddyPress Groups established by the BP Group Hierarchy plugin.
+Description: Enables propagation of Activity Items up or down a hierarchy of BuddyPress Groups established by the BP Group Hierarchy plugin.
 Version: 0.1
 Author: Christian Wach
 Author URI: http://haystack.co.uk
@@ -15,15 +15,29 @@ Plugin URI: http://haystack.co.uk
 // set our version here
 define( 'BP_GROUPS_HIERARCHY_PROPAGATE_VERSION', '0.1' );
 
+// store reference to this file
+if ( !defined( 'BP_GROUPS_HIERARCHY_PROPAGATE_FILE' ) ) {
+	define( 'BP_GROUPS_HIERARCHY_PROPAGATE_FILE', __FILE__ );
+}
+
+// store URL to this plugin's directory
+if ( !defined( 'BP_GROUPS_HIERARCHY_PROPAGATE_URL' ) ) {
+	define( 'BP_GROUPS_HIERARCHY_PROPAGATE_URL', plugin_dir_url( BP_GROUPS_HIERARCHY_PROPAGATE_FILE ) );
+}
+// store PATH to this plugin's directory
+if ( !defined( 'BP_GROUPS_HIERARCHY_PROPAGATE_PATH' ) ) {
+	define( 'BP_GROUPS_HIERARCHY_PROPAGATE_PATH', plugin_dir_path( BP_GROUPS_HIERARCHY_PROPAGATE_FILE ) );
+}
+
 
 
 /*
 --------------------------------------------------------------------------------
-BpGroupsHierarchyPropagate Class
+BP_Groups_Hierarchy_Propagate Class
 --------------------------------------------------------------------------------
 */
 
-class BpGroupsHierarchyPropagate {
+class BP_Groups_Hierarchy_Propagate {
 
 	/** 
 	 * properties
@@ -40,8 +54,30 @@ class BpGroupsHierarchyPropagate {
 	 */
 	function __construct() {
 	
-		// intercept group activity calls and add sub-group items
-		add_filter( 'bp_has_activities', array( $this, 'propagate_content_up' ), 10, 3 );
+		// use translation
+		add_action( 'plugins_loaded', array( $this, 'translation' ) );
+		
+		// show setting on BP Group Hierarchy admin page
+		add_action( 'bpgh_admin_after_settings', array( $this, 'admin_option' ) );
+	
+		// receive data from BP Group Hierarchy admin page
+		add_action( 'bpgh_admin_after_save', array( $this, 'admin_save' ), 10, 1 );
+	
+		// get existing option, defaulting to 'up'
+		$direction = get_site_option( 'bpghp_propagation_direction', 'up' );
+		
+		// which way then?
+		if ( $direction == 'up' ) {
+	
+			// intercept group activity calls and add sub-group items
+			add_filter( 'bp_has_activities', array( $this, 'propagate_content_up' ), 10, 3 );
+		
+		} elseif ( $direction == 'down' ) {
+		
+			// intercept group activity calls and add parent group items
+			add_filter( 'bp_has_activities', array( $this, 'propagate_content_down' ), 10, 3 );
+			
+		}
 
 		// --<
 		return $this;
@@ -54,7 +90,7 @@ class BpGroupsHierarchyPropagate {
 	 * @description: PHP 4 constructor
 	 * @return object
 	 */
-	function BpGroupsHierarchyPropagate() {
+	function BP_Groups_Hierarchy_Propagate() {
 		
 		// is this php5?
 		if ( version_compare( PHP_VERSION, "5.0.0", "<" ) ) {
@@ -67,6 +103,36 @@ class BpGroupsHierarchyPropagate {
 		// --<
 		return $this;
 
+	}
+	
+	
+	
+	/** 
+	 * @description: loads translation, if present
+	 * @todo: 
+	 *
+	 */
+	function translation() {
+		
+		// only use, if we have it...
+		if( function_exists('load_plugin_textdomain') ) {
+	
+			// enable translations
+			load_plugin_textdomain(
+			
+				// unique name
+				'bp-group-hierarchy-propagate', 
+				
+				// deprecated argument
+				false,
+				
+				// relative path to directory containing translation files
+				dirname( plugin_basename( BP_GROUPS_HIERARCHY_PROPAGATE_FILE ) ) . '/languages/'
+	
+			);
+			
+		}
+		
 	}
 	
 	
@@ -112,6 +178,97 @@ class BpGroupsHierarchyPropagate {
 		// --<
 		return $has_activities;
 	
+	}
+	
+	
+	
+	/**
+	 * @description: intercept group activity calls and add parent group items
+	 * @param boolean $has_activities
+	 * @param object $activities_template
+	 * @param array $template_args
+	 * @return array
+	 */
+	function propagate_content_down( $has_activities, $activities_template, $template_args ) {
+
+		// does group have at least one parent?
+		if ( 
+	
+			isset( $template_args['filter'] ) AND 
+			isset( $template_args['filter']['object'] ) AND
+			$template_args['filter']['object'] == 'groups' AND
+			bp_group_hierarchy_has_parent()
+	
+		) {
+			
+			// get the parents
+			$parents = bp_group_hierarchy_get_parents();
+			
+			// add current group
+			$parents[] = $template_args['filter']['primary_id'];
+
+			// add parents to query filter
+			$template_args['filter']['primary_id'] = implode( ',', $parents );
+	
+			// recreate activities template
+			global $activities_template;
+			$activities_template = new BP_Activity_Template( $template_args );
+	
+			// override return value
+			$has_activities = $activities_template->has_activities();
+			
+		}
+	
+		// --<
+		return $has_activities;
+	
+	}
+	
+	
+	
+	/**
+	 * @description: save admin option on BP Group Hierarchy admin page
+	 * @param array $options
+	 * @return nothing
+	 */
+	function admin_save( $options ) {
+		
+		// get direction safely, defaulting to 'up'
+		$direction = isset( $options['propagation'] ) ? $options['propagation'] : 'none';
+		
+		// save as site option
+		update_site_option( 'bpghp_propagation_direction', $direction );
+
+	}
+	
+	
+	
+	/**
+	 * @description: show admin option on BP Group Hierarchy admin page
+	 * @return nothing
+	 */
+	function admin_option() {
+	
+		// get existing option, defaulting to 'up'
+		$direction = get_site_option( 'bpghp_propagation_direction', 'up' );
+	
+		?>
+		
+		<tr valign="top">
+			<th scope="row"><label for="propagation"><?php _e( 'Propagate Activity', 'bp-group-hierarchy-propagate' ) ?></label></th>
+			<td>
+				<label>
+					<select id="propagation" name="options[propagation]">
+						<option value="up" <?php if( $direction == 'up' ) echo ' selected="selected"'; ?>><?php _e( 'Up', 'bp-group-hierarchy-propagate' ) ?></option>
+						<option value="down" <?php if( $direction == 'down' ) echo ' selected="selected"'; ?>><?php _e( 'Down', 'bp-group-hierarchy-propagate' ) ?></option>
+					</select>
+					<?php _e( 'Select the direction in which you want group activity to propagate.', 'bp-group-hierarchy-propagate' ); ?>
+				</label>
+			</td>
+		</tr>
+
+		<?php
+
 	}
 	
 	
@@ -184,7 +341,7 @@ function bp_groups_hierarchy_propagate() {
 	if ( defined( 'BP_GROUP_HIERARCHY_IS_INSTALLED' ) ) {
 
 		// init plugin
-		$bp_groups_hierarchy_propagate = new BpGroupsHierarchyPropagate;
+		$bp_groups_hierarchy_propagate = new BP_Groups_Hierarchy_Propagate;
 		
 	}
 

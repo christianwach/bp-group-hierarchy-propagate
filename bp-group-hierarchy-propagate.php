@@ -77,6 +77,11 @@ class BP_Groups_Hierarchy_Propagate {
 			// intercept group activity calls and add parent group items
 			add_filter( 'bp_has_activities', array( $this, 'propagate_content_down' ), 10, 3 );
 			
+		} elseif ( $direction == 'both' ) {
+		
+			// intercept group activity calls and add parent group items
+			add_filter( 'bp_has_activities', array( $this, 'propagate_content_both' ), 10, 3 );
+			
 		}
 
 		// --<
@@ -162,9 +167,12 @@ class BP_Groups_Hierarchy_Propagate {
 		) {
 
 			// add children to query filter
-			$template_args['filter']['primary_id'] = $this->_get_children( 
+			$children = $this->_get_children( 
 				$template_args['filter']['primary_id'] 
 			);
+			
+			// add children to query filter
+			$template_args['filter']['primary_id'] = implode( ',', $children );
 	
 			// recreate activities template
 			global $activities_template;
@@ -227,6 +235,85 @@ class BP_Groups_Hierarchy_Propagate {
 	
 	
 	/**
+	 * @description: intercept group activity calls and add parent AND sub-group items
+	 * @param boolean $has_activities
+	 * @param object $activities_template
+	 * @param array $template_args
+	 * @return array
+	 */
+	function propagate_content_both( $has_activities, $activities_template, $template_args ) {
+	
+		// init parents
+		$parents = array();
+
+		// does group have at least one parent?
+		if ( 
+	
+			isset( $template_args['filter'] ) AND 
+			isset( $template_args['filter']['object'] ) AND
+			$template_args['filter']['object'] == 'groups' AND
+			bp_group_hierarchy_has_parent()
+	
+		) {
+			
+			// get the parents
+			$parents = bp_group_hierarchy_get_parents();
+			
+		}
+			
+		// init children
+		$children = array();
+
+		// does group have children?
+		if ( 
+	
+			isset( $template_args['filter'] ) AND 
+			isset( $template_args['filter']['object'] ) AND
+			$template_args['filter']['object'] == 'groups' AND
+			class_exists( 'BP_Groups_Hierarchy' ) AND
+			BP_Groups_Hierarchy::has_children( $template_args['filter']['primary_id'] )
+	
+		) {
+
+			// get children
+			$children = $this->_get_children( 
+				$template_args['filter']['primary_id'] 
+			);
+			
+		}
+		
+		// did we get any of either?
+		if ( count( $parents ) > 0 OR count( $children ) > 0 ) {
+		
+			// merge the arrays
+			$hierarchy = array_merge( $parents, $children );
+		
+			// add current group
+			$hierarchy[] = $template_args['filter']['primary_id'];
+
+			// make unique
+			$hierarchy = array_unique( $hierarchy );
+		
+			// add groups to query filter
+			$template_args['filter']['primary_id'] = implode( ',', $hierarchy );
+	
+			// recreate activities template
+			global $activities_template;
+			$activities_template = new BP_Activity_Template( $template_args );
+	
+			// override return value
+			$has_activities = $activities_template->has_activities();
+			
+		}
+	
+		// --<
+		return $has_activities;
+	
+	}
+	
+	
+	
+	/**
 	 * @description: save admin option on BP Group Hierarchy admin page
 	 * @param array $options
 	 * @return nothing
@@ -261,6 +348,7 @@ class BP_Groups_Hierarchy_Propagate {
 					<select id="propagation" name="options[propagation]">
 						<option value="up" <?php if( $direction == 'up' ) echo ' selected="selected"'; ?>><?php _e( 'Up', 'bp-group-hierarchy-propagate' ) ?></option>
 						<option value="down" <?php if( $direction == 'down' ) echo ' selected="selected"'; ?>><?php _e( 'Down', 'bp-group-hierarchy-propagate' ) ?></option>
+						<option value="both" <?php if( $direction == 'both' ) echo ' selected="selected"'; ?>><?php _e( 'Up &amp; Down', 'bp-group-hierarchy-propagate' ) ?></option>
 					</select>
 					<?php _e( 'Select the direction in which you want group activity to propagate.', 'bp-group-hierarchy-propagate' ); ?>
 				</label>
@@ -278,9 +366,9 @@ class BP_Groups_Hierarchy_Propagate {
 	
 	
 	/**
-	 * @description: build a comma-delimited list of child groups
+	 * @description: build a list of child group IDs (includes current group ID)
 	 * @param integer $group_id
-	 * @return string
+	 * @return array $subgroup_ids
 	 */
 	function _get_children( $group_id ) {
 	
@@ -319,7 +407,7 @@ class BP_Groups_Hierarchy_Propagate {
 		}
 		
 		// --<
-		return implode( ',', $this->subgroup_ids );
+		return $this->subgroup_ids;
 
 	}
 	

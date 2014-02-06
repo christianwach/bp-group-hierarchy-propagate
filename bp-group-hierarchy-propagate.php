@@ -3,10 +3,10 @@
 --------------------------------------------------------------------------------
 Plugin Name: BP Group Hierarchy Propagate
 Description: Enables propagation of Activity Items up or down a hierarchy of BuddyPress Groups established by the BP Group Hierarchy plugin.
-Version: 0.2
+Version: 0.3
 Author: Christian Wach
 Author URI: http://haystack.co.uk
-Plugin URI: http://haystack.co.uk
+Plugin URI: https://github.com/christianwach/bp-group-hierarchy-propagate
 --------------------------------------------------------------------------------
 */
 

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: buddypress, groups, hierarchy, activity, propagate
 Requires at least: 3.5
 Tested up to: 3.9
-Stable tag: 0.3
+Stable tag: 0.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,10 @@ Note: this plugin has been developed and tested using BuddyPress 1.7+ and requir
 
 
 == Changelog ==
+
+= 0.3.1 =
+
+Added filters for modifying the template arguments
 
 = 0.3 =
 

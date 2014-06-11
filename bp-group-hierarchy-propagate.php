@@ -175,7 +175,7 @@ class BP_Groups_Hierarchy_Propagate {
 			$template_args['filter']['primary_id'] = implode( ',', $children );
 			
 			// allow plugins to modify the arguments
-			$template_args = apply_filters( 'bp_group_hierarchy_propagate_args_up', $template_args );
+			$template_args = apply_filters( 'bpghp_args_up', $template_args );
 	
 			// recreate activities template
 			global $activities_template;
@@ -184,6 +184,9 @@ class BP_Groups_Hierarchy_Propagate {
 			// override return value
 			$has_activities = $activities_template->has_activities();
 			
+			// allow plugins to intercept the result
+			$has_activities = apply_filters( 'bpghp_has_activities_up', $has_activities, $activities_template, $template_args );
+	
 		}
 	
 		// --<
@@ -222,7 +225,7 @@ class BP_Groups_Hierarchy_Propagate {
 			$template_args['filter']['primary_id'] = implode( ',', $parents );
 	
 			// allow plugins to modify the arguments
-			$template_args = apply_filters( 'bp_group_hierarchy_propagate_args_down', $template_args );
+			$template_args = apply_filters( 'bpghp_args_down', $template_args );
 	
 			// recreate activities template
 			global $activities_template;
@@ -231,6 +234,9 @@ class BP_Groups_Hierarchy_Propagate {
 			// override return value
 			$has_activities = $activities_template->has_activities();
 			
+			// allow plugins to intercept the result
+			$has_activities = apply_filters( 'bpghp_has_activities_down', $has_activities, $activities_template, $template_args );
+	
 		}
 	
 		// --<
@@ -304,7 +310,7 @@ class BP_Groups_Hierarchy_Propagate {
 			$template_args['filter']['primary_id'] = implode( ',', $hierarchy );
 	
 			// allow plugins to modify the arguments
-			$template_args = apply_filters( 'bp_group_hierarchy_propagate_args_both', $template_args );
+			$template_args = apply_filters( 'bpghp_args_both', $template_args );
 	
 			// recreate activities template
 			global $activities_template;
@@ -313,6 +319,9 @@ class BP_Groups_Hierarchy_Propagate {
 			// override return value
 			$has_activities = $activities_template->has_activities();
 			
+			// allow plugins to intercept the result
+			$has_activities = apply_filters( 'bpghp_has_activities_both', $has_activities, $activities_template, $template_args );
+	
 		}
 	
 		// --<

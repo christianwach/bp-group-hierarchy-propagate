@@ -173,6 +173,9 @@ class BP_Groups_Hierarchy_Propagate {
 			
 			// add children to query filter
 			$template_args['filter']['primary_id'] = implode( ',', $children );
+			
+			// allow plugins to modify the arguments
+			$template_args = apply_filters( 'bp_group_hierarchy_propagate_template_args_up', $template_args );
 	
 			// recreate activities template
 			global $activities_template;
@@ -217,6 +220,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 			// add parents to query filter
 			$template_args['filter']['primary_id'] = implode( ',', $parents );
+	
+			// allow plugins to modify the arguments
+			$template_args = apply_filters( 'bp_group_hierarchy_propagate_template_args_down', $template_args );
 	
 			// recreate activities template
 			global $activities_template;
@@ -296,6 +302,9 @@ class BP_Groups_Hierarchy_Propagate {
 		
 			// add groups to query filter
 			$template_args['filter']['primary_id'] = implode( ',', $hierarchy );
+	
+			// allow plugins to modify the arguments
+			$template_args = apply_filters( 'bp_group_hierarchy_propagate_template_args_both', $template_args );
 	
 			// recreate activities template
 			global $activities_template;

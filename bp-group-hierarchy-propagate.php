@@ -7,6 +7,8 @@ Version: 0.3.1
 Author: Christian Wach
 Author URI: http://haystack.co.uk
 Plugin URI: https://github.com/christianwach/bp-group-hierarchy-propagate
+Text Domain: bp-group-hierarchy-propagate
+Domain Path: /languages
 --------------------------------------------------------------------------------
 */
 
@@ -40,7 +42,7 @@ BP_Groups_Hierarchy_Propagate Class
 class BP_Groups_Hierarchy_Propagate {
 
 	/**
-	 * properties
+	 * Properties
 	 */
 
 	// builds list of subgroups during recursion
@@ -49,7 +51,8 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * @description: initialises this object
+	 * Initialises this object
+	 *
 	 * @return object
 	 */
 	function __construct() {
@@ -92,7 +95,8 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * @description: PHP 4 constructor
+	 * PHP 4 constructor
+	 *
 	 * @return object
 	 */
 	function BP_Groups_Hierarchy_Propagate() {
@@ -113,9 +117,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * @description: loads translation, if present
-	 * @todo:
+	 * Loads translation, if present
 	 *
+	 * @return void
 	 */
 	function translation() {
 
@@ -147,11 +151,12 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * @description: intercept group activity calls and add sub-group items
-	 * @param boolean $has_activities
-	 * @param object $activities_template
-	 * @param array $template_args
-	 * @return array
+	 * Intercept group activity calls and add sub-group items
+	 *
+	 * @param boolean $has_activities True if there are activities, false otherwise
+	 * @param object $activities_template The BP activities template object
+	 * @param array $template_args The arguments used to init $activities_template
+	 * @return boolean $has_activities True if there are activities, false otherwise
 	 */
 	function propagate_content_up( $has_activities, $activities_template, $template_args ) {
 
@@ -197,11 +202,12 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * @description: intercept group activity calls and add parent group items
-	 * @param boolean $has_activities
-	 * @param object $activities_template
-	 * @param array $template_args
-	 * @return array
+	 * Intercept group activity calls and add parent group items
+	 *
+	 * @param boolean $has_activities True if there are activities, false otherwise
+	 * @param object $activities_template The BP activities template object
+	 * @param array $template_args The arguments used to init $activities_template
+	 * @return boolean $has_activities True if there are activities, false otherwise
 	 */
 	function propagate_content_down( $has_activities, $activities_template, $template_args ) {
 
@@ -247,11 +253,12 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * @description: intercept group activity calls and add parent AND sub-group items
-	 * @param boolean $has_activities
-	 * @param object $activities_template
-	 * @param array $template_args
-	 * @return array
+	 * Intercept group activity calls and add parent AND sub-group items
+	 *
+	 * @param boolean $has_activities True if there are activities, false otherwise
+	 * @param object $activities_template The BP activities template object
+	 * @param array $template_args The arguments used to init $activities_template
+	 * @return boolean $has_activities True if there are activities, false otherwise
 	 */
 	function propagate_content_both( $has_activities, $activities_template, $template_args ) {
 
@@ -332,9 +339,10 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * @description: save admin option on BP Group Hierarchy admin page
+	 * Save admin option on BP Group Hierarchy admin page
+	 *
 	 * @param array $options
-	 * @return nothing
+	 * @return void
 	 */
 	function admin_save( $options ) {
 
@@ -349,8 +357,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * @description: show admin option on BP Group Hierarchy admin page
-	 * @return nothing
+	 * Show admin option on BP Group Hierarchy admin page
+	 *
+	 * @return void
 	 */
 	function admin_option() {
 
@@ -384,9 +393,10 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * @description: build a list of child group IDs (includes current group ID)
-	 * @param integer $group_id
-	 * @return array $subgroup_ids
+	 * Build a list of child group IDs (includes current group ID)
+	 *
+	 * @param integer $group_id The numeric ID of the BuddyPress group
+	 * @return array $subgroup_ids An array of numeric IDs of the child groups
 	 */
 	function _get_children( $group_id ) {
 
@@ -439,7 +449,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 /**
- * @description: initialise our plugin after BuddyPress initialises
+ * Initialise our plugin after BuddyPress initialises
+ *
+ * @return void
  */
 function bp_groups_hierarchy_propagate() {
 

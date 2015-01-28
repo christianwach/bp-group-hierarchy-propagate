@@ -95,28 +95,6 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * PHP 4 constructor
-	 *
-	 * @return object
-	 */
-	public function BP_Groups_Hierarchy_Propagate() {
-
-		// is this php5?
-		if ( version_compare( PHP_VERSION, "5.0.0", "<" ) ) {
-
-			// call php5 constructor
-			$this->__construct();
-
-		}
-
-		// --<
-		return $this;
-
-	}
-
-
-
-	/**
 	 * Loads translation, if present
 	 *
 	 * @return void

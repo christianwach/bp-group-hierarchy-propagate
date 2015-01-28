@@ -399,7 +399,7 @@ class BP_Groups_Hierarchy_Propagate {
 					'public' == $child->status OR
 
 					// allow if they are a member
-					groups_is_user_member( bp_loggedin_user_id(), $group_id )
+					groups_is_user_member( bp_loggedin_user_id(), $child->id )
 
 				) {
 

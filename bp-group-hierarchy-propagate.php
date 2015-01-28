@@ -99,7 +99,7 @@ class BP_Groups_Hierarchy_Propagate {
 	 *
 	 * @return object
 	 */
-	function BP_Groups_Hierarchy_Propagate() {
+	public function BP_Groups_Hierarchy_Propagate() {
 
 		// is this php5?
 		if ( version_compare( PHP_VERSION, "5.0.0", "<" ) ) {
@@ -121,7 +121,7 @@ class BP_Groups_Hierarchy_Propagate {
 	 *
 	 * @return void
 	 */
-	function translation() {
+	public function translation() {
 
 		// only use, if we have it...
 		if( function_exists('load_plugin_textdomain') ) {
@@ -158,7 +158,7 @@ class BP_Groups_Hierarchy_Propagate {
 	 * @param array $template_args The arguments used to init $activities_template
 	 * @return boolean $has_activities True if there are activities, false otherwise
 	 */
-	function propagate_content_up( $has_activities, $activities_template, $template_args ) {
+	public function propagate_content_up( $has_activities, $activities_template, $template_args ) {
 
 		// does group have children?
 		if (
@@ -209,7 +209,7 @@ class BP_Groups_Hierarchy_Propagate {
 	 * @param array $template_args The arguments used to init $activities_template
 	 * @return boolean $has_activities True if there are activities, false otherwise
 	 */
-	function propagate_content_down( $has_activities, $activities_template, $template_args ) {
+	public function propagate_content_down( $has_activities, $activities_template, $template_args ) {
 
 		// does group have at least one parent?
 		if (
@@ -260,7 +260,7 @@ class BP_Groups_Hierarchy_Propagate {
 	 * @param array $template_args The arguments used to init $activities_template
 	 * @return boolean $has_activities True if there are activities, false otherwise
 	 */
-	function propagate_content_both( $has_activities, $activities_template, $template_args ) {
+	public function propagate_content_both( $has_activities, $activities_template, $template_args ) {
 
 		// init parents
 		$parents = array();
@@ -344,7 +344,7 @@ class BP_Groups_Hierarchy_Propagate {
 	 * @param array $options
 	 * @return void
 	 */
-	function admin_save( $options ) {
+	public function admin_save( $options ) {
 
 		// get direction safely, defaulting to 'up'
 		$direction = isset( $options['propagation'] ) ? $options['propagation'] : 'none';
@@ -361,7 +361,7 @@ class BP_Groups_Hierarchy_Propagate {
 	 *
 	 * @return void
 	 */
-	function admin_option() {
+	public function admin_option() {
 
 		// get existing option, defaulting to 'up'
 		$direction = get_site_option( 'bpghp_propagation_direction', 'up' );
@@ -398,7 +398,7 @@ class BP_Groups_Hierarchy_Propagate {
 	 * @param integer $group_id The numeric ID of the BuddyPress group
 	 * @return array $subgroup_ids An array of numeric IDs of the child groups
 	 */
-	function _get_children( $group_id ) {
+	public function _get_children( $group_id ) {
 
 		// build group ids
 		$this->subgroup_ids[] = $group_id;

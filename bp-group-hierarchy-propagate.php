@@ -42,18 +42,22 @@ BP_Groups_Hierarchy_Propagate Class
 class BP_Groups_Hierarchy_Propagate {
 
 	/**
-	 * Properties
+	 * Builds list of subgroups during recursion.
+	 *
+	 * @since 0.1
+	 *
+	 * @var array
 	 */
-
-	// builds list of subgroups during recursion
 	public $subgroup_ids = array();
 
 
 
 	/**
-	 * Initialises this object
+	 * Initialises this object.
 	 *
-	 * @return object
+	 * @since 0.1
+	 *
+	 * @return object $this
 	 */
 	function __construct() {
 
@@ -95,7 +99,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * Loads translation, if present
+	 * Loads translation, if present.
+	 *
+	 * @since 0.1
 	 *
 	 * @return void
 	 */
@@ -129,7 +135,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * Intercept group activity calls and add sub-group items
+	 * Intercept group activity calls and add sub-group items.
+	 *
+	 * @since 0.1
 	 *
 	 * @param boolean $has_activities True if there are activities, false otherwise
 	 * @param object $activities_template The BP activities template object
@@ -180,7 +188,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * Intercept group activity calls and add parent group items
+	 * Intercept group activity calls and add parent group items.
+	 *
+	 * @since 0.2
 	 *
 	 * @param boolean $has_activities True if there are activities, false otherwise
 	 * @param object $activities_template The BP activities template object
@@ -231,7 +241,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * Intercept group activity calls and add parent AND sub-group items
+	 * Intercept group activity calls and add parent AND sub-group items.
+	 *
+	 * @since 0.3
 	 *
 	 * @param boolean $has_activities True if there are activities, false otherwise
 	 * @param object $activities_template The BP activities template object
@@ -317,7 +329,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * Save admin option on BP Group Hierarchy admin page
+	 * Save admin option on BP Group Hierarchy admin page.
+	 *
+	 * @since 0.2
 	 *
 	 * @param array $options
 	 * @return void
@@ -335,7 +349,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * Show admin option on BP Group Hierarchy admin page
+	 * Show admin option on BP Group Hierarchy admin page.
+	 *
+	 * @since 0.2
 	 *
 	 * @return void
 	 */
@@ -371,7 +387,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 	/**
-	 * Build a list of child group IDs (includes current group ID)
+	 * Build a list of child group IDs which includes current group ID.
+	 *
+	 * @since 0.1
 	 *
 	 * @param integer $group_id The numeric ID of the BuddyPress group
 	 * @return array $subgroup_ids An array of numeric IDs of the child groups
@@ -427,7 +445,9 @@ class BP_Groups_Hierarchy_Propagate {
 
 
 /**
- * Initialise our plugin after BuddyPress initialises
+ * Initialise our plugin after BuddyPress initialises.
+ *
+ * @since 0.1
  *
  * @return void
  */

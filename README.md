@@ -1,7 +1,7 @@
 BP Group Hierarchy Propagate
 ============================
 
-The BP Group Hierarchy Propagate plugin propagation of Activity Items up or down a hierarchy of BuddyPress Groups established by the BP Group Hierarchy plugin.
+The *BP Group Hierarchy Propagate* plugin enables propagation of Activity Items *up*, *down* or *up and down* a hierarchy of BuddyPress Groups established by the *BP Group Hierarchy* plugin.
 
 Note: this plugin has been developed and tested using BuddyPress 1.7+ and requires at least BP Group Hierarchy 1.4.2 if you want to switch the direction of propagation. The switch can be found on the BP Group Hierarchy settings page.
 
@@ -27,6 +27,18 @@ If you have downloaded *BP Group Hierarchy Propagate* as a ZIP file from the Git
 If you have cloned the code from GitHub, it is assumed that you know what you're doing.
 
 ## Changelogs ##
+
+### 0.3.2 ###
+
+Fix child group access permissions
+
+### 0.3.1 ###
+
+Added filters for modifying the template arguments
+
+### 0.3 ###
+
+Added propagation up and down the group hierarchy
 
 ### 0.2 ###
 

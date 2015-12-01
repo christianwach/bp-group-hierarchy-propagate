@@ -3,7 +3,7 @@ Contributors: needle
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8MZNB9D3PF48S
 Tags: buddypress, groups, hierarchy, activity, propagate
 Requires at least: 3.5
-Tested up to: 4.1
+Tested up to: 4.4
 Stable tag: 0.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -17,6 +17,8 @@ The BP Group Hierarchy Propagate plugin enables propagation of Activity Items *u
 
 Note: this plugin has been developed and tested using BuddyPress 1.7+ and requires at least BP Group Hierarchy 1.4.2 if you want to switch the direction of propagation. The switch can be found on the BP Group Hierarchy settings page.
 
+If you're a developer, I'd welcome your contributions via the [Github repo](https://github.com/christianwach/bp-group-hierarchy-propagate).
+
 
 
 == Installation ==
@@ -24,6 +26,7 @@ Note: this plugin has been developed and tested using BuddyPress 1.7+ and requir
 1. Extract the plugin archive
 1. Upload plugin files to your `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
+
 
 
 == Changelog ==

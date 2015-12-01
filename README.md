@@ -28,6 +28,10 @@ If you have cloned the code from GitHub, it is assumed that you know what you're
 
 ## Changelogs ##
 
+### 0.3.3 ###
+
+Audited against latest BuddyPress
+
 ### 0.3.2 ###
 
 Fix child group access permissions

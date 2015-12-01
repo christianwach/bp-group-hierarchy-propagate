@@ -31,6 +31,10 @@ If you're a developer, I'd welcome your contributions via the [Github repo](http
 
 == Changelog ==
 
+= 0.3.3 =
+
+Audited against latest BuddyPress
+
 = 0.3.2 =
 
 Fix child group access permissions
